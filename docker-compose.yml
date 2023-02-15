@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    container_name: docker-node-mongo
+    restart: always
+    build: .
+    ports:
+      - '80:8000'
+    external_links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+   client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: myapp-client
+    container_name: myapp-react-client
+    command: npm run start
+    depends_on:
+      - app
+    ports:
+      - "3000:3000"  
